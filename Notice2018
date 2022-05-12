@@ -1,0 +1,590 @@
+ancêtres: SlMot2, SlMot2017, SlCsv2017
+concurrent SlCsv2019
+
+201800203
+
+@@à télécharger: http://dl.free.fr/ssUHvP6Kw (pendant un mois) @@
+
+GAFFE: sans doute bug en cours (sur le bis:!) , utiliser SlCsv2018
+
+notice:
+%%CONSTRUCTION D'ECHELLES DE LOEVINGER
+Complétée le 20180203 pour duplication items avec non rep (SlBis2018.exe ).
+     (Pour l'historique des versions, lire 7.11 plus bas.)
+
+CEVIPOF / LASMAS (CNRS)
+
+Pierre-Olivier FLAVIGNY et Guy MICHELAT
+
+
+Mise en garde : 
+- c'est de la programmation vintage, ne tentez pas le diable (chemin de plus de 8 caractères,  extension pour K de plus de 3 caractères, espaces et caractères spéciaux ou accentués, etc...)
+- estimant que l'accès à l'ordinateur est (maintenant) immédiat, le programme s'arrête à toute erreur (c'est de la programmation ''hostile'').
+
+0. Présentation.
+
+Le programme se déroule en deux phases avec des syntaxes différentes:
+0.1  Description de l'échelle : 
+- syntaxe à mot-clé...
+- se termine par l'instruction COMPTER :; (ou C :; pour rétro-compatibilité)
+
+0.2  Construction proprement dite (après COMPTER:;)
+- syntaxe frustre : une commande est un seul caractère, éventuellement suivi d'une valeur,
+- possibilité de mettre plusieurs commandes sur la même ligne, éventuellement séparées par un espace pour augmenter la lisibilité
+
+1.  FICHIER DES DONNEES 
+1.1 au format fixe (ancestral et jubilaire)
+
+Le fichier des données est un fichier de forme ASCII. Le fichier peut continur d'autres informations (lettres...) mais seules sont utilisables les colonnes codées de 0 à 9, correspondant aux réponses de chaque individu pour chaque question, figurent sur une colonne et seront repérées par leur position sequentielle dans l'enregistrement (un seul) - donc de longueur constante, de format fixe. Une colonne vide sera vue comme un « 0 ».
+
+1.2 au format .CSV (MsExcel ou autre tableur)
+
+La première ligne contient les NOMS DE COLONNE
+Chaque valeur est terminée par un point virgule .
+exemple :
+
+age;sexe;opinion;
+66;2;3;
+
+
+le fichier (table excel) peut contenir des données de tout type, mais seules sont utilisables les  données codées de 0 à 9, correspondant aux réponses de chaque individu pour chaque question, elles sont repérées par le ''nom de question '' trouvé sur la ligne 1 de la même colonne.
+Les cases ''vides'' peuvent être converties en une valeur définie par le mot-clé VIDE= 
+
+2. IMPLANTATION SUR LE DISQUE
+
+2.1 Pour faire simple:
+
+Il faut que le dossier dans lequel est situé le fichier de données et le fichier des instructions préparées contienne le fichier du programme : Slbis2018.exe, fichier  du programme de construction d'échelles.
+
+2.2 : mieux
+Pour éviter d'encombrer la machines avec de multiples copies de slbis2018.exe, il est possible/souhaitable de le placer dans un dossier séparé et de disperser seulement un raccourci  (lire 7.5 plus bas)
+
+
+3. DESCRIPTION DE L'ECHELLE
+
+Il FAUT préparer la description de l'échelle dans un fichier qui sera lu au moment de l'exécution du programme échelle
+
+3.0 Syntaxe générale des instructions:
+
+Donner UNE instruction par ligne, terminée par un ;
+En souvenir de la carte perforée, la ligne ne doit pas dépasser 80 caractères.
+
+Une ligne commençant par le un ''*'' est un commentaire, recopié dans les sorties. 
+
+L'instruction est définie par un mot-clé  suivi  du caractère ''deux points''
+chaque instruction se termine par le caractère ";".
+
+on trouve deux types d'instructions :
+3.0.1 instruction ''à paramètres'' :
+l'instruction est suivie (ou non) de paramètres :
+- un mot-clé
+- le signe =
+- la ''valeur'' du paramètre
+
+(exemples : LOEVINGR, ECHELLE, QUESTION)
+
+3.0.2 instruction ''liste''
+l'instruction donne une chaîne alphabétique ou plusieurs valeurs numériques séparées par des virgules.
+
+(exemples : INFILE, ITEM, SKIP, STOPAFTR, LISTQ, LISTITEM, C ou COMPTER)
+
+
+
+3.1 Instruction de définition du chantier :
+
+LOEVINGR : [CHEMIN=abcdefgh,][DATE=abcdefgh,][TITRE,] [LS=xxx];
+- LOEVINGR : échelle de Loevinger
+- CHEMIN= désigne le nom générique des fichiers de sauvegarde des états de l'échelle, il seront individualisés par l'extension indiquée au moment de la sauvegarde (par la commande Kabc, voir plus bas)
+- DATE= il est utile de fixer sur le listing la date du travail (8 caractères maximum sans blancs) (facultatif), sera reportée sur les sorties.
+- TITRE ce mot-clé est devenu obsolète, il indiquait que la ligne suivante serait TITRE: pour donner  un titre ; l'instruction TITRE: est maintenant simplement facultative
+
+		par exemple : 
+		LOEVINGR: CHEMIN=ethno,DATE=17mai94;
+
+
+3.2 instruction FACULTATIVE 
+	TITRE :            (72 caractères, espaces autorisés, sauf ; of course !)
+		par exemple : 
+		TITRE:échelle ethnocentrisme;
+
+
+3.3 Définition de l'Echelle
+ECHELLE: [IMPIT,]  [COLN,]  [LS=xxx,] [SKIP=xxx,]
+[STOPAFTR=xxx,] [LISTQ=xxx,] [LISTITEM=xxxx];
+les options possibles sont :
+- IMPIT : pour ajouter un/des  sauts de page toutes les 25 lignes dans la liste des questions/items, vraiment insignifiant.
+- COLN : imprimer une colonne  Ni dans la liste (L)
+- LISTQ= nombre d'individus dont on imprime les valeurs
+- LISTITEM = nb d'individus dont on imprime les items
+- SKIP= nombre d'individus à ignorer avant la lecture
+- STOPAFTR= nombre d'individus à utiliser. 
+- LS=xxxx  taille de ligne (défaut 80) , inexploité !
+
+3.4 instructions devenues  inutiles
+(car remplacées par des mot-clé sur l'intruction ECHELLE : ci dessus)
+3.4.1 LISTQ : nombre d'indidus dont on imprimera les réponses aux questions  utilisées
+3.4.2 LISTITEM : nombre d'indidus dont on imprimera les valeurs des items construits
+3.4.3 SKIP : nombre de lignes du fichier individus à ignorer (défaut 0)
+3.4.5 STOPAFT : nombre de lignes du fichier indicudus à lire (défaut 999999999!)
+
+
+3.5 fichier de données
+	INFILE : nom du fichier des données
+
+		par exemple :
+		INFILE:ethno.dat;
+
+Si l'extension du nom de fichier est .CSV, la programme travaillera sur une table Excel « enregistrée sous » au format .csv.
+
+Si l'extension est .csv, le programme cherchera aussi le fichier .labels.csv et si il le trouve les libellés seront automatiquement diponibles, à contôler par Mq et Mr.
+
+3.6 Définition d'une QUESTION.
+Le nombre de questions est limité à 99.
+- QUESTION: mot-clé indiquant que ce qui suit désigne une question ;
+
+3.6.0 – Nouveauté : gestion des questions "doubles"
+depuis la version 29 Novembre 2017 il est possible de tirer une question de deux colonnes de la table .CSV d'origine, selon TROIS procédés:
+
+3.6.0.1 "questions alternatives" (split dans le langage de l'enquêteur): 
+- la deuxième colonne est désignée par le mot-clé  CSVSPLIT
+- une seule colonne peut comporter une réponse.
+
+3.6.0.2 "addition simple": 
+ - la deuxième colonne est désignée par le mot-clé  CSVPLUS
+ - les réponses de deux colonnes sont simplement ADDITIONNEES
+ - cette opération (pas encore utilisée) vise le cas de colonnes à additionner, par exemple créer « nombre d'enfants » à partir de « nombre de fille » + « nombre de garçons »
+
+3.6.0.3 "juxtaposition"
+ - la deuxième colonne est désignée par le mot-clé CSVX10
+ - la réponse de la colonne suppémentaire vient DEVANT l'autre colonne
+ - les deux colonnes peuvent avoir des réponses simultanément
+ - les items sont construits avec des valeurs de 0 à 99
+
+cela permet de prendre en charge des recodages faits antérieurempent en spss, par exemple (traitement de 201611-baro...)
+COMPUTE   MUSCATHO= Q21_5 +10*Q21_3.
+RECODE    MUSCATHO (21,31,32,41,42,43=1)(Else=0).
+utilisé par:
+question: nom=muscatho , csv=muscatho;
+item:50,1;
+va pouvoir être pris en charge par:
+question: nom=muscatho, csv=q21_5,csvx10=q21_3;
+ item:50,21,31,32,41,42,43;
+
+
+3.6.1  dans la forme ancestrale,  il est suivi des mots clés permettant de décrire et localiser  cette question 
+- NOM= nom de la question (8 caractères maximum)
+- COL= position séquentielle de la question dans chaque enregistrement des données
+- MAX = code maximum atteint par cette question (ce mot clé est inutile, et si absent il sera calculé automatiquement selon les réponses trouvées.)
+à venir prochainement:
+         - COLX10=col2 : question, supplémentaire (valeur multipliée par 10)
+           - COLPLUS : question, supplémentaire additionnée
+           - COLSPLIT : question, exclusive
+
+		par exemple :
+		QUESTION:NOM=fierfran,COL=2,MAX=9;
+          QUESTION:NOM=fierfran,COL=2;
+          QUESTION:NOM=fierfran,COL=2,COLX10=1;
+
+3.6.2 dans la forme « CSV » (Excel)
+
+QUESTION : 
+   - NOM=nom  donné à la question (8 caractères maximum), facultatif
+   - CSV= colonne de la table utilisée (comme lue sur la première ligne)
+   - CSVX10= colonne supplémentaire (valeur multipliée par 10)
+   - CSVSPLIT= colonne supplémentaire (valeur alternative exclusive)
+   - CSVPLUS= colonne à ajouter
+   - VIDE= valeur à utiliser pour une colonne "vide" (un espace en fait dans le .csv)
+            (par défaut: VIDE=0) !
+  -BIS=code . Chaque item de la question sera dédoublé en incluant ce code. L'item généré aura son numéro suivi d'une *.
+
+
+3.7 Définition des Items :
+Décrit un item issu de la question. 
+Le nombre d'items est limité à 99 .
+ - ITEM : mot-clé indiquant que ce qui suit définit un item
+   Les items sont identifiés par un nombre entier (2 chiffres pour la présentation)  pour l'ensemble de l'échelle, mais ce numéro n'a qu'une valeur symbolique : on peut rajouter des items en dehors de l'ordre séquentiel, ce qui évite de renuméroter
+- le numéro de l'item est la première valeur de la liste.
+- les valeurs des codes correspondant à ce qui est positif par rapport à l'échelle pour cet item. Elles sont séparées par des virgules . 
+On peut également utiliser le - pour indiquer une suite de valeurs : par exemple 2-4 précise que les valeurs de 2 à 4 sont positives
+		exemple :
+		ITEM:6,0,2-4;
+Où 6 est le numéro de l'item, et où les valeurs positives de l'item sont 0, 2, 3, 4.
+
+Les autres questions et items sont définis de la même façon.
+
+
+3.8 - Fin des définitions questions et Items, comptage.
+Cette commande est nécessaire dans des situations particulières:
+ - quand on souhaite inclure dans le fichier préparé des commandes de construction  de l'échelle.
+
+		COMPTER:; ou C :;
+
+L'instruction lance le comptage des individus ; 
+si le fichier se termine sans, la commande COMPTER:;  est implicite.)
+
+Au delà de cette instruction, il est possible d'ajouter des commandes de construction d'échelle , (y compris la commande « Q » pour terminer immédiatement.)
+
+3.9 EXEMPLES DE FICHIER DE DESCRIPTION D'ECHELLE
+On sauvegardera ce fichier sur disque
+	par exemple : ETHNO.PAR
+
+3.9.1 Exemple ''format fixe'' 
+
+  LOEVINGR:CHEMIN=pratcomp,DATE=7sept91,TITRE;
+  TITRE:echelle pratiques catho86;
+  ECHELLE:;
+  INFILE:\echelles\catho86B.dat;
+  QUESTION:NOM=pratd,COL=77,MAX=9;
+    ITEM:1,1,2,3;
+    ITEM:2,1,2;
+    ITEM:3,1-4;
+  QUESTION:NOM=comunion,COL=21,MAX=5;
+    ITEM:4,4,5;
+    ITEM:5,3,4,5;
+    ITEM:6,2-5;
+  QUESTION:NOM=priere,COL=37,MAX=4;
+    ITEM:7,1,2,3;
+    ITEM:8,1;
+    ITEM:9,1,2;
+  C:;
+
+3.9.2 exemple au format ''csv''
+
+
+  LOEVINGR:CHEMIN=pratcomp,DATE=7sept91;
+  TITRE:pratiques comportements catho CSV;
+  ECHELLE:;
+  INFILE:\echelles\catho86B.csv;
+  QUESTION:NOM=pratd,CSV=nomv1;
+    ITEM:1,1,2,3;
+    ITEM:2,1,2;
+    ITEM:3,1-4;
+  QUESTION:NOM=comunion,CSV=nomc2;
+    ITEM:4,4,5;
+    ITEM:5,3,4,5;
+    ITEM:6,2-5;
+  QUESTION:NOM=priere,CSV=nomv3;
+    ITEM:7,1,2,3;
+    ITEM:8,1;
+    ITEM:9,1,2;
+  COMPTER:;
+
+
+4. LANCEMENT DU PROGRAMME D'ECHELLES
+	
+(en cas de difficulté, lire éventuellement 7.1) 
+
+Se positionner dans le dossier qui contient les données , le fichier paramètre et le programme de construction d'échelle (SLbis2018.EXE)
+
+Le lancement peut se faire "à la dos" dans une fenêtre de commande ou via l'explorateur de fichiers de Windows
+
+4.1 dans une fenêtre de commande (CMD):
+	par exemple :
+	CD LABO88
+
+Lancement du programme 
+	SLbis2018
+
+il est possible de nommer directement le fichier paramètre préparé ou le fichier sauvegardé par Kabc.
+     SLbis2018 ethno.par
+     SLbis2018 ethno.guy
+
+4.2 sous l'explorateur de fichiers de Windows :
+au choix :
+    
+4.2.1    faire un clic-droit puis « exécuter » sur le nom du programme SlBis2018 (ou un double clic gauche)
+
+4.2.2   par « drag & drop » (glisser déposer)
+il est aussi possible de "draguer le fichier paramètre/sauvegardé sur le programme.
+
+4.3 choix manuel du fichier paramètre/sauvegarde
+
+si on n'a pas fourni de nom de fichier à l'écran apparaît :
+
+nom_de_fichier_prepare	<RETURN>	si vous avez préparé votre échelle
+nom_de_sauvegarde pour reprendre une sauvegarde par Kabc
+
+en réponse donner le nom du fichier contenant la description de l'échelle préparée ou sauvegardée
+
+	par exemple : ETHNO.PAR
+
+le programme démarre en répétant les instructions fournies, ce qui permet des vérifications (en particulier  les items dont le numéro est duppliqué, etc...)
+
+après lecture du fichier individus, le programme indique
+ - le nombre d'individus du fichier de données,
+- démarre en mode ''additif''
+- donne la liste des items.
+- termine par l'invitation à entrer une commande ( ? H, A/S, …. )
+ 
+il attend une commande.
+
+5. CONSTRUCTION DE L'ECHELLE
+
+Comme signalé plus haut, une ''commande'' s'exprime par un caractère; en règle générale, il est possible de donner plusieurs commandes sur la même ligne avant de frapper la touche « entrée »
+
+5.1 AIDE EN LIGNE
+
+On peut toujours demander de l'aide en frappant : ? <entrée>
+la sortie est :
+ ?
+  [ReInitialisation et choix de la méthode)
+   A  partir/repartir en additif (aucun item présent)
+   S  partir/repartir en soustractif (tous les items présents)
+  H: affiche la valeur du coefficent de Loevinger.
+  Composition de l'échelle
+   +#: ajouter l'item #
+   -#: retirer l'item #
+   /#: remplacer le seul item de la question par #
+  Choix Affichage des items (pour L, T et G):
+   F  tous les items (+ ou -)
+   P  items présents
+   N  items absents
+   X  items de questions absentes
+   Y  items de questions présentes
+  L  liste des items (Hi, Ci, Wi...) selon F,P,N,X,Y
+  Mx  mise en page
+   M1/2 : interligne
+   ME/L : sortie Etroite ou Large
+   Mq : libelle des questions
+   Mr : libelle des reponses
+   M0 : pas de libelle
+  Tx  commande de Tableau
+   Tn  Nij = effectif de la "case vide"
+   Tc  Cij = % observee de la case vide.
+   Tw  Wij = % thÚorique de la case vide.
+   Th  Hij = % H de Loevinger 100*(1-Cij/Wij).
+   T+  efectif de la case ++
+   Ti  Implication 0.01
+   Tj  Implication 0.05
+   Tk  Implication 0.10
+   Ts  Seuil 0.01
+   Tt  Seuil 0.05
+   Tu  Seuil 0.10
+  G  Graphique des popularités par questions & items.
+  Razert : ajouter a la fin de chaque commande.
+  Kabc Conserver le travail en cours dans <chemin>.abc
+  B     fait un bug pour pédagogie
+  Q Quitte, si dernieres modif non sauvées, confirmer par E(nd)
+  Z Ecrit le resume des commandes pour construire l'echelle.  
+  * commentaire jusqu'a fin de ligne
+ 
+
+5.2 CHOIX du mode Additif/Soustractif
+
+Il faut commencer par initialiser la méthode de construction que l'on va utiliser : Additif ou Soustractif (sinon, le travail démarre en mode additif)
+	- en tapant A pour Additif : l'échelle est construite à partir le la série d'items que l'on fait entrer un par un en tapant + suivi du numero de l'item
+
+	- en tapant S pour Soustractif : l'echelle est construite sur l'ensemble des items . On peut alors enlever un à un les items les moins bons en tapant - suivi du numero de l'item
+A  partir/repartir en Additif (aucun item présent)
+                    On peut ensuite ajouter des items par + suivi du numéro d'item
+
+S partir/repartir en Soustractif (tous les items présents)
+    On peut ensuite enlever des items par - suivi du numéro d'item
+
+5.3  Ajout/suppression d'item 
+
+rappel : les items ''bis'' sont signalés par un caractère ''*'' collé à la fin du numéro.
++nn ,  ou +nn*
+-nn, ou -nn*
+/nn ou /nn* remplace le seul item présent de la question par nn
+
+5.4 LISTING DE L'ETAT DE L'ECHELLE
+
+La commande L donne l'état actuel de l'échelle :
+rappel : il est possible de choisir les items affichés par la commande P/F/N/X/Y.
+
+Description des colonnes de la Liste 
+
+    C'est à dire le tableau donnant d'abord le coefficient général de Loevinger de l'échelle, le nombre d'items présents et ensuite les coefficients de Loevinger, la proportion moyenne des "cases vides" et les popularités relatifs à chaque item ; ainsi que le vecteur de définition des valeurs positives de l'item et l'indication de la présence (T) ou de l'absence (F) de l'item dans cet état de l'échelle.
+
+
+- La 1ère colonne : #ITEM donne le numero de l'item
+- Les 2ème et 3ème colonnes : C(I) et W(I) ne sont pas directement utiles
+- Si option COLN une colonne supplémentaire avec l'effectif del'item (pour vérification pointilleuse, plus précis que P(I) )
+- La 4ème colonne : P(I) fournit la fréquence de l'item
+- La 5ème colonne : H(I) fournit la valeur du coefficient de Loevinger, valeur de la hierarchisation de cet item par rapport à l'ensemble des autres items présents (H-item)
+- La 6ème colonne : ET SI, donne la valeur du coefficient H-items de l'échelle si on « changeait » l'engagement de cet item 
+- La 7ème colonne indique si l'item est :
+             T : présent  
+             F : absent  
+             / :  absent dans une question à un seul item présent, à insérer par la commande /.
+
+- Les colonnes suivantes fournissent la description de l'item : chaque colonne correspond à l'une des valeurs du code composant l'adhésion à l'item (dans l'ordre 0, 1, 2, 3...9)
+	Le signe - indique que la valeur cachée du code est définie comme négative par rapport au sens de l'échelle.
+            - un chiffre (de 0 à 9) indique que cette valeur du code est définie comme positive par rapport au sens de l'échelle.
+
+variante : quand une question "juxtapose" deux colones du .csv, les codes sont listés (pour éviter un vecteur de 100 éléments)
+
+5.5  Tableaux :
+
+Contrôle de la mise en page:
+T1 ou T2 : fixe l'interligne du tableau
+T4 ou T5 fixe la largeur des colonnes
+(faire un T6: pour ++)
+ML ou ME pour 80/150 de largeur
+
+T donne un tableau triangulaire
+
+C'est à dire un tableau contenant pour chaque croisement d'item l'effectif, la proportion et le contenu théorique de la "case vide", et le coefficient de Loevinger. Dans la pratique, on n'utilise que le tableau des Hij par la commande Th.
+
+Mais aussi si l'on veut, le tableau des coefficients d'implication de FOUILHE à differents seuils (en pratique seulement Ti au seuil de .01) et le tableau des Seuils de Hij, au delà desquels on admet l'implication de l'item i par rapport à l'tem j  (en pratique seulement Ts au seuil de .01)
+
+Tn : Nij (effectif de la case vide)
+Tc : Cij (probabilité observée de la case vide)
+Tw : Wij (probabilité théorique de la case vide)
+Th : Hij 100*(1-Cij/Wij)
+Ti : implication Pij seuil de .01
+Tj : implication seuil de .05
+Tk : implication seuil de .10
+T+ : effectif case ++
+
+5.6 contrôle de l'affichage des items pour les commandes L , T et G.
+
+F affichage de tous (full) les items (+ ou -)
+P affichage des seuls items Présents
+N affichage des seuls items Absents
+X affichage des seuls items des questions ABSENTES (qui n'ont aucun item présent)
+Y affichage des seuls items ABSENTS des questions PRESENTES (qui ont au moins UN item présent)
+           
+
+5.7 Mise en page
+ 
+ M0 pas de libellé 
+ Mq libellés des questions 
+ Mr libellés des réponses sous la question
+ Mi libellés des réponses sous l'item
+ Mv libellés des questions ayant un item affiché
+ Mw libellés pour toutes les questions 
+
+
+interligne
+  M1: simple
+  M2:doube
+
+largeur de page
+ Ml : large
+ Me : étroit
+
+Taille des colonnes de tableau
+  M5 cinq chiffres (le défaut)
+  M4 quatre chiffres.
+
+5.8 Graphiques
+
+G Graphique des popularités (proportion de réponses positives de 0 à 100) pour chaque item concerné 
+             Ils concernent l'ensemble des items ou une sélection selon l'état de l'aiguillage F/P/N/X/Y  . Le signe + indique que l'item est présent, - qu'il est absent. L'axe en bas du graphique récapitule la position de tous les items.
+
+La première colonne donne:
+- le "nom de la question" (Nom= ou CSV=)
+- si une question sans nom provient de deux colonnes le CSV= est suivi de * ou + à la place du :
+
+note: si il y a des "collisions", la suite des items est donnée sur une/des lignes suivantes  signalées par le signe "=".
+
+5.9 conservation de l'état actuel de l'échelle
+GAFFE: si la commande K n'est pas la dernière de la ligne, elle doit être suivie d'un espace 
+
+GAFFE: le fichier de sauvegarde est plutot illisible à l'oeil, toutefois, douceur: si on "ouvre" le fichier sauvegardé par un éditeur de texte, on peut lire au début ou à la fin un commentaire:  ''echelle de loevinger.... '' 
+
+Les échelles sont auvées dans un fichier dont le radical du nom est donné par le mot-clé CHEMIN= de la carte ECHELLE: 
+
+les trois lettres (abc, ci dessous)  ne peuvent être TXT!
+
+l'utilisateur peut choisir de REUTILISER le même fichier ou d'en changer au fur et à mesure du travail.
+
+Kabc conserver cette échelle avec le nom de chemin et l'extension abc (trois lettres ou chiffres  au choix).
+             Ceci pour éviter de refaire le travail de construction, si on veut reprendre l'échelle dans une étape ultérieure.
+
+
+5.10 Résumé
+Z  écrit la suite des commandes pour reconstruire l'état actuel.
+(à copier/coller en fin du fichier préparé pour relancer le travail à l'identique après avoir changé quelques paramètres...)
+
+5.11 fin de travail
+Q Quitter le programme. 
+Si dernières modifications non sauvées, confirmer par E (End)
+
+
+6. REPRISE D'UNE ECHELLE (sauvée par K)
+
+6.1 new-look
+
+donner simplement le nom de l'échelle sauvegardes (chemin.abc)
+
+
+6.2  à l'ancienne
+plus pisponible
+
+7.  Quoi de neuf, docteur ?
+
+7.1 Dépannage :
+il peut arriver que le programme se termine précipitemment en fermant sa fenêtre :
+- chercher sur le disque le dernier fichier créé 
+- on peut espérer une meilleure visibilité en utilisant le lancement dans une fenêtre de commande .
+- lancer par l'intermédiaire d'une fenêtre CMD
+
+7.2 Trace de l'échelle dans un fichier (anciennement imprimante)
+
+7.3 Lancement rapide dans une fenêtre de commande:
+
+pour travailler en conversationnel:
+slbis2018.
+
+slbis2018  fichier.ech
+listing dans fichier.ech.txt
+
+
+7.4 lancement rapide sous explorateur de fichiers de windows :
+
+draguer le fichier préparé ou la sauvegarde par Kabc sur l'icone de slbis2018.exe.
+(pas de possibilité de changer le nom du fichier listing; il est déduit du nom du fichier préparé allongé de .txt.
+si on part d'une échelle sauvegardée par Kabc, le listing est AJOUTE à la fin.
+
+
+7.5 Création d'un raccourci qui dispense de placer le fichier exécutable (Slbis2018.exe ) dans le bac à sable (dossier de l'échelle)
+se joue sous l'explorateur de fichier.
+
+1) créer un dossier « programme «  (bin en British)
+2) y placer le fichier slbis2018.exe
+3) créer le raccourci par clic-droit ?> crée raccourci
+4) le renommer slbis2018
+5) et c'est ce raccourci qu'il faudra placer dans CHAQUE dossier d'échelle
+
+note : dans une fenêtre de commande, utiliser slmot2017.lnk ou start slbis2018.lnk.
+
+
+7.6 Création d'un .bat pour lancer le programme dans une fenetre cmd "résistante"
+   Scène du crime: si Slbis2018 est simplement lancé depuis l'explorateur de ficher se termine par un "bug", la fenêtre se ferme et l'utilisateur ne peut avoir le rapport de l'erreur.
+Le lancement par Slbis2018.bat permetra de conserver la fenêtre en cas de fin anormale
+
+
+7.7 Invention de la commande "échange" (/)
+quand une question compte UN SEUL item présent la commande / suivie du numéro d'un autre item de la même question supprime l'item présent puis ajoute le remplaçant
+
+7.8 Note sur DATE=
+n'est pas exploité, codage libre, mais limité à 8 caractères, la date du jour est générée sur la sortie
+
+7.9 "Fin brutale au point ####''
+Quand le programme estime impossible  ou déraisonnable de continuer, il signale son point en erreur par un NOMBRE.
+Celui ci "peut être utilisé" pour rechercher l'origine de l'erreur dans le fortran par un "call pose(..)"
+
+7.10 NOTE SUR LA GESTION DE AVAST!
+autant que j'ai compris:
+quand avast trouve un nouveau programme il met un certain temps avant de lui faire confiance:
+a priori, si il demande, choisir de répondre "exécuter quand-même"
+pas de photo pour l'instant
+
+7.11 Historique :
+
+Version 7 juillet 1997, avec calcul des coefficients de FOUILHE
+Complétée le 20171019 pour version SlMot2017, compatible W10 64 bits.
+Complétée le 20171125 pour lecture fichier Excel au format .csv (SlCsv2017.exe ).
+
+la version « slcsv2017 » ne comporte pas de changement des calculs. Les principales nouveautés sont :
+- obtention d'une « double » sortie (écran et « listing »)
+- lecture de données dans une table Exczel au format .csv
+- ajout de la date/heure d'exécution.
+- et c'est à peu près tout !
+
+La version « BIS2018 » apporte essentiellement la possibilité de dédoubler chaque item en y incluant un code (a priori non-réponse, mai autre possible.)
+%%
+

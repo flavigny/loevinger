@@ -1,4 +1,5 @@
 
+'repris de: http://antiguide.free.fr/wiki/wakka.php?wiki=SpssSavToCsv
 
 ' flavigny@free.fr, 20171214
 Set args = Wscript.Arguments

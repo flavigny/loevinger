@@ -1,0 +1,89 @@
+
+
+R version 3.1.0 (2014-04-10) -- "Spring Dance"
+Copyright (C) 2014 The R Foundation for Statistical Computing
+Platform: i386-w64-mingw32/i386 (32-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> library(foreign)
+> file.choose()
+[1] "C:\\Users\\adminpo\\Downloads\\201711 - Baro racisme - Cumul - v2.sav"
+> dataset = read.spss("C:\\Users\\adminpo\\Downloads\\201711 - Baro racisme - Cumul - v2.sav", to.data.frame=TRUE)
+Warning messages:
+1: In read.spss("C:\\Users\\adminpo\\Downloads\\201711 - Baro racisme - Cumul - v2.sav",  :
+  C:\Users\adminpo\Downloads\201711 - Baro racisme - Cumul - v2.sav: Unrecognized record type 7, subtype 18 encountered in system file
+2: In read.spss("C:\\Users\\adminpo\\Downloads\\201711 - Baro racisme - Cumul - v2.sav",  :
+  C:\Users\adminpo\Downloads\201711 - Baro racisme - Cumul - v2.sav: Unrecognized record type 7, subtype 24 encountered in system file
+3: In `levels<-`(`*tmp*`, value = if (nl == nL) as.character(labels) else paste0(labels,  :
+  duplicated levels in factors are deprecated
+> View(dataset)
+
+> write.csv(MyData, file = "MyData.csv"> 
+> 
+> write.csv(dataset,file="po;csv")
+> write.csv(dataset,file="po.csv")
+> write.csv(dataset,file="pof.csv")
+> ls()
+[1] "a"       "b"       "dataset"
+> getgwd()
+Error: could not find function "getgwd"
+> getwd()
+[1] "C:/Users/adminpo/Documents"
+> attr(dataset, “variable.labels”)
+Error: unexpected input in "attr(dataset, “"
+> cat.csv(dataset,file="pof.csv")
+Error: could not find function "cat.csv"
+> cat(dataset,file="pof.csv")
+Error in file(file, ifelse(append, "a", "w")) : 
+  cannot open the connection
+In addition: Warning message:
+In file(file, ifelse(append, "a", "w")) :
+  cannot open file 'pof.csv': Permission denied
+> cat(dataset,file="pof1.csv")
+Error in cat(list(...), file, sep, fill, labels, append) : 
+  argument 1 (type 'list') cannot be handled by 'cat'
+> cat(file="pof1.csv")
+> raw = read.spss("C:\\Users\\adminpo\\Downloads\\201711 - Baro racisme - Cumul - v2.sav", to.data.frame=TRUE, use.value.label=FALSE)
+Warning messages:
+1: In read.spss("C:\\Users\\adminpo\\Downloads\\201711 - Baro racisme - Cumul - v2.sav",  :
+  C:\Users\adminpo\Downloads\201711 - Baro racisme - Cumul - v2.sav: Unrecognized record type 7, subtype 18 encountered in system file
+2: In read.spss("C:\\Users\\adminpo\\Downloads\\201711 - Baro racisme - Cumul - v2.sav",  :
+  C:\Users\adminpo\Downloads\201711 - Baro racisme - Cumul - v2.sav: Unrecognized record type 7, subtype 24 encountered in system file
+> view(raw)
+Error: could not find function "view"
+> View(raw)
+> write.csv(raw,file="baropof.csv")
+> write.csv(raw,file="baropof.csv" ,quote=FALSE , sep=";")
+Warning message:
+In write.csv(raw, file = "baropof.csv", quote = FALSE, sep = ";") :
+  attempt to set 'sep' ignored
+> write.csv(raw,file="baropof.csv" ,quote = FALSE , sep = ";")
+Warning message:
+In write.csv(raw, file = "baropof.csv", quote = FALSE, sep = ";") :
+  attempt to set 'sep' ignored
+> write.csv2(raw,file="baropof.csv" ,quote = FALSE , sep = ";")
+Warning message:
+In write.csv2(raw, file = "baropof.csv", quote = FALSE, sep = ";") :
+  attempt to set 'sep' ignored
+> write.csv2(raw,file="\201711 - Baro racisme - Cumul - v2.csv" ,quote = FALSE)
+> write.csv2(raw,file="\201711 - Baro racisme - Cumul - v2.csv" ,quote = FALSE, NA="")
+Error: unexpected '=' in "write.csv2(raw,file="\201711 - Baro racisme - Cumul - v2.csv" ,quote = FALSE, NA="
+> write.csv2(raw,file="\201711 - Baro racisme - Cumul - v2.csv" ,quote = FALSE, NA=" ")
+Error: unexpected '=' in "write.csv2(raw,file="\201711 - Baro racisme - Cumul - v2.csv" ,quote = FALSE, NA="
+> write.csv2(raw,file="\201711 - Baro racisme - Cumul - v2.csv" ,quote = FALSE, na = " ")
+>
+
+

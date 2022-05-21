@@ -1,0 +1,43 @@
+repris de: http://antiguide.free.fr/wiki/wakka.php?wiki=SpssSavToCsv
+2017, 2018
+Conversion .sav en .csv pour GM75 Loevinger
+
+20190808: échec sur ENEF vague 18 et suivantes (26000 individus, je ne sais combien de variables)
+
+pour relire fichier .sav:
+- en payant: CollecTiCa
+gratos: en utilisant R : https://www.r-bloggers.com/how-to-open-an-spss-file-into-r/
+
+
+mode d'emploi:
+
+    placer le fichier "sav2csv.vbs" dans le dossier contenant le .sav créé par spss
+    draguer le .sav de spss sur le .vbs
+    vérifier les trois fichiers .csv créés
+        .csv: les réponses brutes
+        .labels.csv: les réponses développées selon les libellés du questionnaire, GAFFE: volumineux, voire monstrueux (1)
+        .questions.csv: libellés des questions
+
+
+carnet de bal:
+2016 FàF : .csv
+. sav envoyé par NM75 "201610-Baroracisme-VoletFaF?+QO-FichierClient?.sav"
+2017 201711 - Baro racisme - Cumul - v2.sav
+
+    recu le 20171512 ????
+    converti le 20171205
+    converti pa Po et R
+        201711-Baroracisme-Cumul-v2.csv
+
+2017 FaF?
+
+    reçu par WeTransfer: 201711 - Baro racisme - Volet F++íF.sav
+    201711-Baro racisme-Volet FaF?.sav (daté du 20171122)
+
+retrouv er la transmission à GM?
+
+20181124: again, aucune modificvation nécessaire
+
+GAFFE: la conversion par R contient une colonne de plus (sans nom)
+il est donc impossible de croiser un .csv créé sous spss avec un .labels.csv de R
+

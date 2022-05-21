@@ -1,0 +1,46 @@
+repris de http://antiguide.free.fr/wiki/wakka.php?wiki=SlCsv2019
+
+20181213
+GM75
+successeur de SlSvc2018 SlFev29019
+
+20190118 bug en cours
+ - dire comptage silencieux depart
+ - @@impression intermédiaire 'N=@@
+ - impression 'rlu e
+ - traiteme,nt du guillement ouvrant dans questions
+ - @@vu une fois h= et 1 item ! @@##pas grave, juste pmas recalculé!##
+ - a ajouter present pas dans txttxt
+ - @@dire 0/un item present@@
+- fichier(3)
+
+nouveautés:
+ - plein de "bugs" supprimés! (dont accents mal traduits, message manquant dans .txt.txt en cas de fin anormale)
+ - possible de choisir utilisation de questions et/ou labels indépendamment sur la carte ECHELLE:
+ - modifié pour enquête monstrueuses (2000 questions, lignes de 50000 caractères)
+ - filtrage des individus, sur la carte ECHELLE:
+   F= UNE variable Csv  (a été un temps FILTRE=)
+   V=la valeur à conserver (1) a été V=
+ - possibilité d'afficher la progression du chargement:
+  - PCT=pourcentage sur la carte ECHELLE:
+
+mais le temps d'exécution est aussi devenu monstrueux: sans les labels, peut-être une heure pour lire le ficher cevipof vague 7 (25000 individus, 1500 variables)
+
+invention du programme escabeau (petite échelle)
+##plus tard uine version qui titrera les colonnes utiles en lisant la commande d'échelle##
+
+mode d'emploi:
+ - placer le fichier 'escabeau.vbs' dans le dossier de travail
+ - rédiger le fichier d'extraction, appelons le chantier: EXTRAIT
+   - nom déduit du .csv des données, allongé du nom d'extrait, par exemple
+     - pour l'enquête  ('vague 7 pof.sav' de Spss, converti par SpssSavToCsv ): 
+        réponses (numériques): 'vague 7 pof.csv', 
+        texte des questions dans 'vague 7 pof.questions.csv'
+        réponses en clair  dans 'vague 7 pof.labels.csv'
+     - rédiger le fichier ##'vague 7 pof.EXTRAIT.txt' ##avec un nom de colonne à conserver par ligne
+   - le programme 'escabeau.vbs' crée une nouvelle triplette:
+     'vague 7 pof.EXTRAIT.csv', 'vague 7 pof.EXTRAIT.questions.csv', 'vague 7 pof.EXTRAIT.labels.csv'
+ - draguer ce fichier sur le fichier "escabeau.vbs"
+
+code source en VBScript: **escabeau.vbs**
+

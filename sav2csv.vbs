@@ -1,7 +1,7 @@
+' flavigny@free.fr, 20171214, 20220523
 
-'repris de: http://antiguide.free.fr/wiki/wakka.php?wiki=SpssSavToCsv
-
-' flavigny@free.fr, 20171214
+' conserver fichiers 
+keep=true
 Set args = Wscript.Arguments
 if args.count<>1 then 
  msgbox "Conversion Spss .sav en .csv"&vbcrlf&"draguer le fichier .sav sur mon icone"
@@ -26,40 +26,51 @@ if ucase(mid(nom,len(nom)-3)) <> ".SAV" then
  msgbox ".sav obligatoire" & vbcrlf &ucase(mid(nom,len(nom)-3))
  wscript.quit
 end if
-out=mid(nom,1,len(nom)-4) & ".csv"
-lab=mid(nom,1,len(nom)-4) & ".labels.csv"
-lib=mid(nom,1,len(nom)-4) & ".questions.csv"
+racine=mid(nom,1,len(nom)-4)
+out= racine & ".csv"
+lab=racine & ".labels.csv"
+lib=racine & ".questions.csv"
 
 dim fso
 set fso = CreateObject("Scripting.FileSystemObject")
 CurrentDir =  mid(nom,1,instrrev(nom,"\"))
 CurrentDiru = mid(nomu,1,instrrev(nomu,"\"))
-batname=   currentdiru & improbable & ".bat"
-rname= currentdiru  & improbable & ".r"
-'msgbox nom &vbcrlf & currentdir & vbcrlf & CurrentDiru& vbcrlf & batname & vbcrlf & rname
+batname=   racine & ".r.bat"
+rname= racine & ".r"
 
 set fo=fso.createtextfile(batname)
 fo.writeline "@echo off"
+fo.writeline "@echo "& now
+fo.writeline "echo prepare par sav2csv.vbs pour passage de spss a echelle de Loevinger"
 fo.writeline "cd """&currentdiru &""""
-fo.writeline "set rpath=""C:\Program Files\R\R-3.1.0\bin\i386\RSCRIPT.exe"""
+fo.writeline "set rpath=""C:\Program Files\R\R-4.0.2\bin\i386\RSCRIPT.exe"""
 fo.writeline "if exist %rpath% goto lestla"
-fo.writeline "set rpath=""C:\Program Files(x86)\R\R-3.1.0\bin\i386\RSCRIPT.exe"""
-fo.writeline "if exist %rpath% goto lestla"
-fo.writeline "echo: GAFFE: pas trouvé R 3.1.0, on tente usage par le path systeme"
+'fo.writeline "set rpath=""C:\Program Files(x86)\R\R-3.1.0\bin\i386\RSCRIPT.exe"""
+'fo.writeline "if exist %rpath% goto lestla"
+fo.writeline "echo: GAFFE: pas trouvé %rpath%, on tente usage par le path systeme"
 fo.writeline "set rpath=rscript.exe"
 fo.writeline ":lestla"
-fo.writeline "set scratchr="""&currentdiru & improbable & ".r"""
-fo.writeline "echo ------ feuille de route pour R"
+'fo.writeline "set scratchr="""&currentdiru & improbable & ".r"""
+fo.writeline "set scratchr="""&racine & ".r"""
+fo.writeline "echo ------ script pour R"
 fo.writeline "type %scratchr%"
 fo.writeline "echo ------ appel de R"
-fo.writeline "%rpath% %scratchr%"
-fo.writeline "echo ------ fin de R"
+fo.writeline "%rpath% %scratchr% > "& racine&".r.txt"
+fo.writeline "echo Vous pouvez consulter la log de R dans le fichier "&racine&".r.txt"
+'fo.writeline "echo ------ fin de R"
 fo.writeline "pause"
 fo.writeline "exit"
 fo.close
 set fo=fso.createtextfile(rname)
+fo.writeline "# "& now
+fo.writeline "# prepare par sav2csv.vbs pour passage de spss à echelle de Loevinger"
+
 fo.writeline  "library(foreign)"
 fo.writeline  "values = read.spss("""&nom&""", to.data.frame=TRUE , use.value.labels = FALSE)"
+
+'fo.writeline  " Freq(values$ECVA1) "
+'fo.writeline  " values$dizaine <- 0 "
+'fo.writeline  " values$pof <- values$ECVA1 - 10*values$dix  }"
 fo.writeline  "write.csv2(values,file="""&out&""" ,quote = FALSE, na = "" "" )"
 fo.writeline  "labels = read.spss("""&nom&""", to.data.frame=TRUE , use.value.labels = TRUE)"
 fo.writeline  "write.csv2(labels,file="""&lab&""" ,quote = FALSE, na = "" "" )"
@@ -74,8 +85,5 @@ rep=oShell.Run("cmd /k """& batname &"""" ,,true)
 ' msgbox "done"
 ' faudrait effacer .r et .bat
 ' commenter les deux ligne suivantes pour autopsier l'exécution si abend
-fso.deletefile batname
-fso.deletefile rname
-
-
-
+if not keep then fso.deletefile batname
+if not keep then fso.deletefile rname
